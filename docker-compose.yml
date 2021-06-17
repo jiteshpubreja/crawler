@@ -1,0 +1,17 @@
+version: "3.7"
+services:
+  crawl_text:
+    build: ./src
+    # command: python app.py
+    # command: gunicorn --reload --bind 0.0.0.0:5002 app:app
+    command: gunicorn --bind 0.0.0.0:5002 app:app
+    container_name: crawl_text
+    restart: always
+    volumes:
+      - ./src:/app
+    environment:
+      - APP_NAME=crawl_text
+      - FLASK_APP=app.py
+      - FLASK_ENV=production
+    ports:
+      - 5002:5002
