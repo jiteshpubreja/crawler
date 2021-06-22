@@ -2,6 +2,7 @@
 
 ## List of Resources for Crawler
 
+* [Justext by Jan Pomikalek](https://github.com/miso-belica/jusText)
 * [Urdu Stopwords](https://github.com/Delta-Sigma/urdu-stopwords)
 
 ## List of Languages Supported
