@@ -9,7 +9,7 @@
         <h3>{{ self.heading() }}</h3>
       </div>
       <div class="card-body">
-        <form method="POST">
+        <form method="POST" id="link-grabber">
           <fieldset>
             <div class="form-group row">
               <label for="link" class="col-sm-2 col-form-label">Link</label>
@@ -32,15 +32,66 @@
           </fieldset>
         </form>
       </div>
-      {% if outtext %}
+      {% if outtext or links%}
         <div class="card-footer">
-          <div class="form-group">
-            <label for="exampleTextarea" class="form-label mt-4">Output</label>
-            <textarea class="form-control" id="exampleTextarea" rows="{{ outtext|length }}">{% if outtext %}{{ outtext|join('\n') }}{% endif %}</textarea>
+          <div class="row">
+            <ul class="nav justify-content-center">
+              {% if outtext %}
+                <li class="nav-item">
+                  <a class="nav-link" href="#" onclick="openTab('data-tab')">Data</a>
+                </li>
+              {% endif %}
+              <li class="nav-item">
+                <a class="nav-link" href="#" onclick="openTab('links-tab')">Links</a>
+              </li>
+            </ul>
+          </div>
+          {% if outtext %}
+            <div id="data-tab" class="form-group tabs">
+              <label for="exampleTextarea" class="form-label mt-4">Output</label>
+              <textarea class="form-control" id="exampleTextarea" rows="{{ outtext|length }}">{% if outtext %}{{ outtext|join('\n') }}{% endif %}</textarea>
+            </div>
+          {% endif %}
+          <div id="links-tab" class="form-group tabs" {% if outtext %}style="display:none;"{% endif %}>
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">URL</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for l in links %}
+                <tr>
+                  <td>
+                    <a href="{{ l }}" target="_blank">{{ l }}</a>
+                  </td>
+                  <td>
+                    <button class="btn btn-primary" onclick="crawl('{{ l }}')">Crawl</button>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
           </div>
         </div>
       {% endif %}
     </div>
   </div>
 </div>
+<script>
+  function crawl(link) {
+    let form = document.getElementById("link-grabber");
+    form.link.value = link;
+    form.submit();
+  }
+
+  function openTab(tabName) {
+    let x = document.getElementsByClassName("tabs");
+    for (let i = 0; i < x.length; i++) {
+      x[i].style.display = "none";
+    }
+    document.getElementById(tabName).style.display = "block";
+  }
+</script>
 {% endblock %}

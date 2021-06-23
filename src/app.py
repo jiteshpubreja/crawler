@@ -1,14 +1,19 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, Response, send_from_directory, g
-import os
+from flask import Flask, render_template, request, flash
 import re
-import json
-import datetime
 import requests
 import justext
+from bs4 import BeautifulSoup
+import urllib.parse
 
 
 from dotenv import load_dotenv,find_dotenv
 load_dotenv(find_dotenv())
+
+ignore_links = [
+  "whatsapp",
+  "javascript",
+  "mailto",
+]
 
 replacements = {
   "‘":"",
@@ -20,6 +25,17 @@ def getAllStopWords():
     stopwords.update(justext.get_stoplist(language))
   return stopwords
 
+def extractlinks(link,content):
+  link = urllib.parse.urlparse(link)
+  links = []
+  data = BeautifulSoup(content,"lxml")
+  [links.append(x.get("href")) for x in data.find_all("a") if x.get("href")]
+  links = [x for x in links if not x.startswith(tuple(ignore_links)) and not x.startswith("#") and not x == "/"]
+  for i,x in enumerate(links):
+    if x and not x.startswith("http"):
+      links[i] = link._replace(path=re.sub(r"\.\.\/","",x),params="",query="",fragment="").geturl()
+  links = list(set([x for x in links if x.startswith("http")]))
+  return links
 
 app = Flask(__name__)
 app.secret_key = "thisissomethingsecret"
@@ -56,14 +72,19 @@ def homepage():
               anyLangStopWords = getAllStopWords()
             paragraphs = justext.justext(response.content,anyLangStopWords,99,100,0.1,0.32,0.2,200,True)
             paragraphs = [x.text for x in paragraphs if not x.is_boilerplate]
-            if not paragraphs:
+            links = extractlinks(link,response.content)
+            if not paragraphs and not links:
               flash("No useful data found.","danger")
             else:
-              flash("Found Data.","success")
-              output = "\n".join(paragraphs).replace("\r\n","\n")
-              for r in replacements:
-                output = output.replace(r,replacements[r])
-              return render_template("homepage.html", link=link, outtext=output.split("\n"), languages=justext.get_stoplists())
+              if not paragraphs:
+                flash("Found Links only.","warning")
+                return render_template("homepage.html", link=link, links=links, languages=justext.get_stoplists())
+              else:
+                flash("Found Data and Links.","success")
+                output = "\n".join(paragraphs).replace("\r\n","\n")
+                for r in replacements:
+                  output = output.replace(r,replacements[r])
+              return render_template("homepage.html", link=link, links=links, outtext=output.split("\n"), languages=justext.get_stoplists())
       return render_template("homepage.html", link=link, languages=justext.get_stoplists())
   return render_template("homepage.html", languages=justext.get_stoplists())
 
