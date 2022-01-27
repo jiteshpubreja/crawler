@@ -14,5 +14,6 @@
 * Dogri
 * Hindi
 * Pashto
+* Sindhi
 
 ### [Online Demo](https://crawl.vishalpup.in/)
