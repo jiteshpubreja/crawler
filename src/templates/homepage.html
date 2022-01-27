@@ -22,8 +22,8 @@
               <div class="col-sm-4">
                 <select class="form-control" id="language" name="language" id="exampleSelect1">
                   <option>All</option>
-                  {% for language in languages %}
-                    <option value="{{ language }}">{{ language }}</option>
+                  {% for l in languages %}
+                    <option value="{{ l }}" {% if language and language == l %}selected{% endif %}>{{ l }}</option>
                   {% endfor %}
                 </select>
               </div>

@@ -78,14 +78,14 @@ def homepage():
             else:
               if not paragraphs:
                 flash("Found Links only.","warning")
-                return render_template("homepage.html", link=link, links=links, languages=justext.get_stoplists())
+                return render_template("homepage.html", link=link, links=links, language=language, languages=justext.get_stoplists())
               else:
                 flash("Found Data and Links.","success")
                 output = "\n".join(paragraphs).replace("\r\n","\n")
                 for r in replacements:
                   output = output.replace(r,replacements[r])
-              return render_template("homepage.html", link=link, links=links, outtext=output.split("\n"), languages=justext.get_stoplists())
-      return render_template("homepage.html", link=link, languages=justext.get_stoplists())
+              return render_template("homepage.html", link=link, links=links, outtext=output.split("\n"), language=language, languages=justext.get_stoplists())
+      return render_template("homepage.html", link=link, language=language, languages=justext.get_stoplists())
   return render_template("homepage.html", languages=justext.get_stoplists())
 
 @app.route('/about', methods=['GET','POST'])
