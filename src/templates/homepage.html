@@ -49,7 +49,7 @@
           {% if outtext %}
             <div id="data-tab" class="form-group tabs">
               <label for="exampleTextarea" class="form-label mt-4">Output</label>
-              <textarea class="form-control" id="exampleTextarea" rows="{{ outtext|length }}">{% if outtext %}{{ outtext|join('\n') }}{% endif %}</textarea>
+              <textarea class="form-control" id="exampleTextarea" rows="{{ outtext|length }}" onclick="this.focus();this.select()" readonly="readonly">{% if outtext %}{{ outtext|join('\n') }}{% endif %}</textarea>
             </div>
           {% endif %}
           <div id="links-tab" class="form-group tabs" {% if outtext %}style="display:none;"{% endif %}>
