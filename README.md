@@ -16,5 +16,6 @@
 * Pashto
 * Sindhi
 * Dari
+* Balochi
 
 ### [Online Demo](https://crawl.vishalpup.in/)
