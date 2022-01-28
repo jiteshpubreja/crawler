@@ -15,5 +15,6 @@
 * Hindi
 * Pashto
 * Sindhi
+* Dari
 
 ### [Online Demo](https://crawl.vishalpup.in/)
