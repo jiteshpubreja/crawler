@@ -53,26 +53,28 @@
             </div>
           {% endif %}
           <div id="links-tab" class="form-group tabs" {% if outtext %}style="display:none;"{% endif %}>
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th scope="col">URL</th>
-                  <th scope="col">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for l in links %}
-                <tr>
-                  <td>
-                    <a href="{{ l }}" target="_blank">{{ l }}</a>
-                  </td>
-                  <td>
-                    <button class="btn btn-primary" onclick="crawl('{{ l }}')">Crawl</button>
-                  </td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
+            <div class="table-responsive no-pad" style="overflow-x:auto;">
+              <table class="table table-sm table-hover table-striped table-bordered" style="table-layout: fixed;width: 100%;max-width: 100%;">
+                <thead class="navbar-dark bg-dark" style="color: rgba(255, 255, 255, 0.8);">
+                  <tr>
+                    <th scope="col" class="align-middle" style="width: 90%">URL</th>
+                    <th scope="col" class="align-middle text-center" style="width: 10%">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for l in links %}
+                  <tr>
+                    <td>
+                      <a href="{{ l }}" target="_blank">{{ l }}</a>
+                    </td>
+                    <td class="align-middle text-center">
+                      <button class="btn btn-primary" onclick="crawl('{{ l }}')">Crawl</button>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       {% endif %}
