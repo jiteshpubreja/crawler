@@ -17,5 +17,6 @@
 * Sindhi
 * Dari
 * Balochi
+* Shahmukhi
 
 ### [Online Demo](https://crawl.vishalpup.in/)
